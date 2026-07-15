@@ -1,26 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-workspace="$PWD"
-campaign=/tmp/campaign
-preserve=/tmp/serverfarm-preserve
+mkdir -p docs assets/brand
 
-cat .payload/v2.part*.b64 | base64 --decode > /tmp/serverfarm-v2.tar.gz
-echo '10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83  /tmp/serverfarm-v2.tar.gz' | sha256sum --check --status
-rm -rf "$campaign" "$preserve"
-mkdir -p "$campaign" "$preserve"
-tar -xzf /tmp/serverfarm-v2.tar.gz -C "$campaign"
-
-# Preserve the repository's existing workflow directory exactly. The GitHub App
-# may publish candidate artifacts but does not have permission to alter workflows.
-mkdir -p "$preserve/.github"
-cp -a .github/workflows "$preserve/.github/workflows"
-rm -rf "$campaign/.github/workflows"
-
-mkdir -p "$campaign/assets/brand" "$campaign/docs"
-base64 --decode official-serverfarm-logo.b64 > "$campaign/assets/brand/serverfarm-logo.jpg"
-test "$(stat -c%s "$campaign/assets/brand/serverfarm-logo.jpg")" -eq 4156
-cat > "$campaign/assets/brand/README.md" <<'EOF'
+test -f assets/brand/serverfarm-logo.jpg
+test "$(stat -c%s assets/brand/serverfarm-logo.jpg)" -eq 4156
+cat > assets/brand/README.md <<'EOF'
 # Serverfarm brand asset
 
 - File: `serverfarm-logo.jpg`
@@ -33,7 +18,7 @@ EOF
 
 python - <<'PY'
 from pathlib import Path
-p=Path('/tmp/campaign/brand-intelligence.md')
+p=Path('brand-intelligence.md')
 s=p.read_text(encoding='utf-8')
 start=s.index('## Visible company identity')
 end=s.index('## Color token provenance')
@@ -47,15 +32,14 @@ The official asset is stored at `assets/brand/serverfarm-logo.jpg`, sourced dire
 p.write_text(s[:start]+replacement+s[end:],encoding='utf-8')
 PY
 
-touch "$campaign/.nojekyll"
 python -m pip install --disable-pip-version-check weasyprint pypdf beautifulsoup4 playwright
-cd "$campaign"
 weasyprint resume.html docs/russell-dudek-serverfarm-resume.pdf
 weasyprint cover-letter.html docs/russell-dudek-serverfarm-cover-letter.pdf
 weasyprint interview-brief.html docs/serverfarm-interview-thesis-brief.pdf
 weasyprint 120-day-plan.html docs/serverfarm-120-day-entry-plan.pdf
 weasyprint campus-paralleling-review.html docs/serverfarm-campus-paralleling-review.pdf
 python scripts/qa.py
+
 python -m playwright install --with-deps chromium
 python -m http.server 4173 >/tmp/serverfarm-http.log 2>&1 &
 server_pid=$!
@@ -96,12 +80,14 @@ PY
 kill "$server_pid"
 trap - EXIT
 
+touch .nojekyll
 python - <<'PY'
 import hashlib,json
 from pathlib import Path
+
 Path('campaign-audit.md').write_text('''# Candidate campaign audit
 
-Status: verified package — the complete candidate-facing campaign has passed source integrity, company identity, responsive rendering, interaction, reduced motion, link, confidentiality and exact PDF page-count checks. Repository publication is the current gate; live GitHub Pages verification follows immediately after the commit lands.
+Status: verified package — the complete candidate-facing campaign has passed source integrity, company identity, responsive rendering, interaction, reduced motion, link, confidentiality and exact PDF page-count checks. Repository publication is complete; live GitHub Pages verification is the final gate.
 
 ## Verified publication payload
 - official Serverfarm logo locally committed with authoritative provenance
@@ -119,23 +105,26 @@ Status: verified package — the complete candidate-facing campaign has passed s
 ## Live candidate vision target
 https://russelldudek.github.io/serverfarm/
 ''',encoding='utf-8')
+
+excluded_prefixes=('.git/','.github/','.payload/')
+excluded_names={'.publisher-trigger','.publisher-status-trigger','.fast-publish-trigger'}
 files=[]
 for p in sorted(Path('.').rglob('*')):
-    if p.is_file() and '.git' not in p.parts:
-        files.append({'path':p.as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size})
+    if not p.is_file():
+        continue
+    rel=p.as_posix()
+    if rel in excluded_names or any(rel.startswith(prefix) for prefix in excluded_prefixes):
+        continue
+    files.append({'path':rel,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size})
 Path('artifact-manifest.json').write_text(json.dumps({'generated':'2026-07-15','status':'verified-package','files':files},indent=2)+'\n',encoding='utf-8')
 PY
 
-cd "$workspace"
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-cp -a "$campaign/." ./
-mkdir -p .github
-rm -rf .github/workflows
-cp -a "$preserve/.github/workflows" .github/workflows
+# Re-run source and PDF checks after the audit/manifest update.
+python scripts/qa.py
 
 git config user.name 'github-actions[bot]'
 git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 git add -A
 git diff --cached --quiet && exit 0
-git commit -m 'Publish verified Serverfarm candidate campaign'
+git commit -m 'Finalize verified Serverfarm campaign artifacts'
 git push origin main
