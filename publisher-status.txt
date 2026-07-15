@@ -1,3 +1,70 @@
-state=started
+state=failed
 source_sha=832632ab0252d0a04a8f31e4382d91a553923e8c
-updated_at=2026-07-15T15:00:11Z
+updated_at=2026-07-15T15:00:13Z
+
+--- detail ---
++ set -euo pipefail
++ cat .payload/v2.part00.b64 .payload/v2.part01.b64 .payload/v2.part02.b64 .payload/v2.part03.b64 .payload/v2.part04.b64
++ base64 --decode
++ echo '10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83  /tmp/serverfarm-v2.tar.gz'
++ sha256sum --check --status
++ rm -rf /tmp/campaign
++ mkdir -p /tmp/campaign
++ tar -xzf /tmp/serverfarm-v2.tar.gz -C /tmp/campaign
++ mkdir -p /tmp/campaign/assets/brand
++ base64 --decode official-serverfarm-logo.b64
+++ stat -c%s /tmp/campaign/assets/brand/serverfarm-logo.jpg
++ test 4156 -eq 4156
++ cat
++ touch /tmp/campaign/.nojekyll
++ find . -mindepth 1 -maxdepth 1 '!' -name .git -exec rm -rf '{}' +
++ cp -a /tmp/campaign/. ./
++ git config user.name 'github-actions[bot]'
++ git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
++ git add -A
++ git commit -m 'Publish audited Serverfarm candidate campaign'
+[main cd48801] Publish audited Serverfarm candidate campaign
+ 39 files changed, 638 insertions(+), 190 deletions(-)
+ delete mode 100644 .github/workflows/materialize-final.yml
+ create mode 100644 .github/workflows/pages.yml
+ delete mode 100644 .github/workflows/publisher-status.yml
+ delete mode 100644 .github/workflows/publisher.yml
+ delete mode 100644 .github/workflows/smoke2.yml
+ delete mode 100644 .materialize-final-trigger
+ create mode 100644 .nojekyll
+ delete mode 100644 .payload/materialize.sh
+ delete mode 100644 .payload/publish-with-status.sh
+ delete mode 100644 .payload/v2.part00.b64
+ delete mode 100644 .payload/v2.part01.b64
+ delete mode 100644 .payload/v2.part02.b64
+ delete mode 100644 .payload/v2.part03.b64
+ delete mode 100644 .payload/v2.part04.b64
+ delete mode 100644 .publisher-status-trigger
+ delete mode 100644 .publisher-trigger
+ delete mode 100644 .smoke2-trigger
+ create mode 100644 120-day-plan.html
+ create mode 100644 README.md
+ create mode 100644 app.js
+ create mode 100644 artifact-manifest.json
+ create mode 100644 assets/brand/README.md
+ create mode 100644 assets/brand/serverfarm-logo.jpg
+ create mode 100644 brand-intelligence.md
+ create mode 100644 brand-tokens.css
+ create mode 100644 campaign-audit.md
+ create mode 100644 campus-paralleling-review.html
+ create mode 100644 cover-letter.html
+ create mode 100644 document-render-qa.json
+ create mode 100644 index.html
+ create mode 100644 interview-brief.html
+ delete mode 100644 isolated-automation-active.txt
+ delete mode 100644 official-serverfarm-logo.b64
+ create mode 100644 qa-results.json
+ create mode 100644 render-qa.json
+ create mode 100644 resume.html
+ create mode 100755 scripts/qa.py
+ create mode 100644 source-notes.md
+ create mode 100644 styles.css
++ git push origin main
+To https://github.com/russelldudek/serverfarm
+ ! [remote rejected] main -> main (refusing to allow a GitHub App to create or update workflow `.github/workflows/pages.yml` without `workflows` permission)
+error: failed to push some refs to 'https://github.com/russelldudek/serverfarm'
