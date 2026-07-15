@@ -1,10 +1,0 @@
-head=2f4795cf7e1b336839b47ad337bf607b515469f3
-base64_rc=0
-archive_sha=10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83
-hash_rc=0
-tar_rc=0
-archive_entries=26
-logo_curl_rc=0
-logo_bytes=4156
-curl_error=  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current                                  Dload  Upload   Total   Spent    Left  Speed   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  4156  100  4156    0     0  21902      0 --:--:-- --:--:-- --:--:-- 21989 
-tar_error=
