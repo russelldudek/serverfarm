@@ -1,0 +1,39 @@
+name: Diagnose candidate campaign publication
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run publication preflight
+        shell: bash
+        run: |
+          set +e
+          report=bootstrap-diagnostic.txt
+          : > "$report"
+          echo "head=$(git rev-parse HEAD)" >> "$report"
+          cat .payload/v2.part*.b64 | base64 --decode > /tmp/serverfarm-v2.tar.gz
+          rc=$?; echo "base64_rc=$rc" >> "$report"
+          sha=$(sha256sum /tmp/serverfarm-v2.tar.gz 2>/dev/null | awk '{print $1}')
+          echo "archive_sha=$sha" >> "$report"
+          test "$sha" = '10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83'
+          echo "hash_rc=$?" >> "$report"
+          tar -tzf /tmp/serverfarm-v2.tar.gz >/tmp/archive-list.txt 2>/tmp/archive-error.txt
+          echo "tar_rc=$?" >> "$report"
+          echo "archive_entries=$(wc -l </tmp/archive-list.txt 2>/dev/null)" >> "$report"
+          curl --fail --location --retry 2 --retry-delay 2 'https://www.serverfarmllc.com/wp-content/uploads/elementor/thumbs/Serverfarm-Logo-qqtqcc9wnm4wrmbc39le0rosoixmpaf6v0v3ul7f8u.jpg' -o /tmp/serverfarm-logo.jpg >/tmp/curl-out.txt 2>/tmp/curl-error.txt
+          echo "logo_curl_rc=$?" >> "$report"
+          echo "logo_bytes=$(stat -c%s /tmp/serverfarm-logo.jpg 2>/dev/null || echo 0)" >> "$report"
+          echo "curl_error=$(tr '\n' ' ' </tmp/curl-error.txt | tail -c 1000)" >> "$report"
+          echo "tar_error=$(tr '\n' ' ' </tmp/archive-error.txt | tail -c 1000)" >> "$report"
+      - name: Commit diagnostic
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bootstrap-diagnostic.txt
+          git diff --cached --quiet || git commit -m 'Record candidate campaign publication diagnostic'
+          git push
