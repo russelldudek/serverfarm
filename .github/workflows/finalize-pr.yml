@@ -1,0 +1,47 @@
+name: Finalize candidate campaign from review event
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: serverfarm-campaign-finalization
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    if: github.event.pull_request.head.ref == 'agent/serverfarm-campaign-v2'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Materialize, generate, audit and commit campaign
+        run: bash .payload/publish.sh
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy candidate vision
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify live campaign routes
+        run: |
+          set -euo pipefail
+          base='https://russelldudek.github.io/serverfarm/'
+          for route in '' 'resume.html' 'cover-letter.html' 'interview-brief.html' '120-day-plan.html' 'campus-paralleling-review.html' \
+            'docs/russell-dudek-serverfarm-resume.pdf' 'docs/russell-dudek-serverfarm-cover-letter.pdf' \
+            'docs/serverfarm-interview-thesis-brief.pdf' 'docs/serverfarm-120-day-entry-plan.pdf' \
+            'docs/serverfarm-campus-paralleling-review.pdf' 'assets/brand/serverfarm-logo.jpg'; do
+            curl --fail --location --retry 8 --retry-delay 5 --output /dev/null "${base}${route}"
+          done
+          curl --fail --location --retry 8 --retry-delay 5 "$base" | grep -F 'Parallel growth with reliability.'
