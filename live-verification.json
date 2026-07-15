@@ -1,0 +1,134 @@
+{
+  "status": "passed",
+  "verified_at": "2026-07-15T15:09:50Z",
+  "source_commit": "b5e42c3c3493ee208723f62306dc8f49e1d742d5",
+  "live_url": "https://russelldudek.github.io/serverfarm/",
+  "exact_file_matches": 15,
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 14780,
+      "sha256": "b122e7b496d78858e008a890266df2601c024cabeeb93349aa2487b4b17ec576",
+      "exact_live_match": true
+    },
+    {
+      "path": "resume.html",
+      "bytes": 9637,
+      "sha256": "c044029041090831b580b29945e088f4b287c4b8e269535bf1f6f19536b69801",
+      "exact_live_match": true
+    },
+    {
+      "path": "cover-letter.html",
+      "bytes": 3519,
+      "sha256": "fb3bb87fc238bee308e9b53b8a4169f951798bf97d7600cd94708ffffb0975a9",
+      "exact_live_match": true
+    },
+    {
+      "path": "interview-brief.html",
+      "bytes": 9139,
+      "sha256": "8183d848544170318ac959e35d9c4ee2d64f98e383730e7f6dc3bd0e8cfadf86",
+      "exact_live_match": true
+    },
+    {
+      "path": "120-day-plan.html",
+      "bytes": 11591,
+      "sha256": "bfed4e9ab53a49807b5fd50abdd5250634cc39fc8c42a0e24c500fa13d2fe2a4",
+      "exact_live_match": true
+    },
+    {
+      "path": "campus-paralleling-review.html",
+      "bytes": 6167,
+      "sha256": "b2a2e2ae1438b98eef2f7e2a201be26b8436c3c352399f0a9dc0bbfab82fdee6",
+      "exact_live_match": true
+    },
+    {
+      "path": "styles.css",
+      "bytes": 15629,
+      "sha256": "ab5e1535f4563c8f06044abf914bff61a3a018e312eb7bd5d86170ea1eb94398",
+      "exact_live_match": true
+    },
+    {
+      "path": "brand-tokens.css",
+      "bytes": 490,
+      "sha256": "7447aa8cbca69a18a084c35bd13995dbdd3c2060b99ce79eedd464f1207a82bf",
+      "exact_live_match": true
+    },
+    {
+      "path": "app.js",
+      "bytes": 1968,
+      "sha256": "d66c38c48d49038d3fbdc6b4d46a0025142d0ec494c9f316f432e76b8490e60f",
+      "exact_live_match": true
+    },
+    {
+      "path": "assets/brand/serverfarm-logo.jpg",
+      "bytes": 4156,
+      "sha256": "ed239ccd95157d6c15628b8c25a888b1c27cb314e570554252e513c732725666",
+      "exact_live_match": true
+    },
+    {
+      "path": "docs/russell-dudek-serverfarm-resume.pdf",
+      "bytes": 29921,
+      "sha256": "d6374e4b1bbb0a007e3095f0e3cea8faecd1b4ee667d71ecad55f5e4396f95f7",
+      "exact_live_match": true
+    },
+    {
+      "path": "docs/russell-dudek-serverfarm-cover-letter.pdf",
+      "bytes": 15723,
+      "sha256": "d146b71420ab0174c0592ea47e915ce3a42663c9338c51c9b9179ba45f435e2c",
+      "exact_live_match": true
+    },
+    {
+      "path": "docs/serverfarm-interview-thesis-brief.pdf",
+      "bytes": 27138,
+      "sha256": "4882c3e744024d179a8ade932a25e456b8ea3339788a43c195e2700f8486cece",
+      "exact_live_match": true
+    },
+    {
+      "path": "docs/serverfarm-120-day-entry-plan.pdf",
+      "bytes": 29069,
+      "sha256": "822f1d01b6068f9c582c5033fab7d4f3d9b14dd0f93162116d5e09b396db5218",
+      "exact_live_match": true
+    },
+    {
+      "path": "docs/serverfarm-campus-paralleling-review.pdf",
+      "bytes": 22194,
+      "sha256": "b8aa56ebb5d7516207fde10a0252fbc3f200296c7a957660f0c9eb3d54fad002",
+      "exact_live_match": true
+    }
+  ],
+  "pdfs": {
+    "docs/russell-dudek-serverfarm-resume.pdf": {
+      "pages": 2,
+      "expected": 2,
+      "identity_present": true,
+      "campaign_url_present": true
+    },
+    "docs/russell-dudek-serverfarm-cover-letter.pdf": {
+      "pages": 1,
+      "expected": 1,
+      "identity_present": true,
+      "campaign_url_present": true
+    },
+    "docs/serverfarm-interview-thesis-brief.pdf": {
+      "pages": 3,
+      "expected": 3,
+      "identity_present": true,
+      "campaign_url_present": true
+    },
+    "docs/serverfarm-120-day-entry-plan.pdf": {
+      "pages": 4,
+      "expected": 4,
+      "identity_present": true,
+      "campaign_url_present": true
+    },
+    "docs/serverfarm-campus-paralleling-review.pdf": {
+      "pages": 2,
+      "expected": 2,
+      "identity_present": true,
+      "campaign_url_present": true
+    }
+  },
+  "interaction_source_present": true,
+  "reduced_motion_source_present": true,
+  "official_logo_live": true
+}

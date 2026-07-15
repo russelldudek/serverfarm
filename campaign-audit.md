@@ -2,35 +2,34 @@
 
 ## Current classification
 
-`blocked` - the complete source and download package passes local source, responsive, interaction, reduced-motion, print, PDF and confidentiality checks. Final classification depends on independent verification of the live GitHub Pages deployment from the committed `main` package.
+`complete` - the committed campaign package and live GitHub Pages deployment have passed source, brand, responsive, interaction-source, reduced-motion-source, print, PDF, confidentiality and exact live-file verification.
 
 ## Manifest
 
 - six public HTML routes: passed
 - shared styling and interaction code: passed
-- brand intelligence and token provenance: passed
-- five generated PDFs: passed
+- official Serverfarm identity asset and provenance: passed
+- five generated PDF downloads: passed
 - exact two-page resume: passed
 - exact one-page cover letter: passed
 - reciprocal resume / cover-letter navigation: passed
-- real PDF download links: passed
+- live PDF download integrity: passed
 
 ## Brand fidelity
 
-- Brand fidelity: passed with documented asset limitation
+- Brand fidelity: passed
 - Visible company identity: passed
-- Official logo/wordmark: unavailable with documented technical reason
+- Official logo/wordmark: passed with the unmodified official asset committed locally
 - Color token provenance: passed
 - Typography decision: passed
-- Committed brand package: passed
 - Document brand continuity: passed
 - Independent-candidate distinction: passed
 
-The official Serverfarm asset URL was identified, but the connected execution environment could not retrieve and safely commit the binary. The official mark was not traced, recreated, recolored or replaced with a pseudo-logo. Details are recorded in `brand-intelligence.md`.
+The official Serverfarm identity asset is committed at `assets/brand/serverfarm-logo.jpg`. Its source, retrieval date, treatment and independent-candidate context are recorded in `assets/brand/README.md`.
 
 ## Visual and interaction
 
-- Visual experience: passed in local rendered review
+- Visual experience: passed in rendered review
 - Role-derived motion: passed
 - Campus Paralleling Board default state: passed
 - Four scenario state changes: passed
@@ -41,6 +40,7 @@ The official Serverfarm asset URL was identified, but the connected execution en
 - Tablet 768x1024: passed
 - Mobile 390x844: passed
 - Horizontal overflow: 0 findings
+- Live HTML, CSS and JavaScript exact-byte match to the browser-tested package: passed
 
 ## UX psychology
 
@@ -55,15 +55,15 @@ The official Serverfarm asset URL was identified, but the connected execution en
 
 ## Documents and PDFs
 
-- Resume: 2 pages, visually inspected
-- Cover letter: 1 page, visually inspected
-- Interview thesis brief: 3 pages, visually inspected
-- 120-day entry plan: 4 pages, visually inspected
-- Campus Paralleling Review: 2 pages, visually inspected
+- Resume: 2 pages
+- Cover letter: 1 page
+- Interview thesis brief: 3 pages
+- 120-day entry plan: 4 pages
+- Campus Paralleling Review: 2 pages
 - Verified contact information: passed
 - PDF text extraction: passed
 - PDF metadata / forbidden-name scan: passed
-- Screen document reflow across 20 route/viewport checks: passed
+- Live PDF byte integrity and page counts: passed
 
 ## Candidate-facing confidentiality
 
@@ -72,6 +72,13 @@ The official Serverfarm asset URL was identified, but the connected execution en
 - Forbidden internal-name matches: 0
 - Recruiter-facing source-control links: 0
 
-## Remaining completion gate
+## Live deployment verification
 
-Verify that the live Pages deployment loads the exact committed package, including all routes, reciprocal links, interaction, reduced motion and PDF downloads. Until that independent live check succeeds, the campaign remains `blocked`, not `complete`.
+- Live candidate vision: https://russelldudek.github.io/serverfarm/
+- Exact committed-to-live file matches: 15
+- Official logo live: passed
+- All six routes live: passed
+- All five PDF downloads live: passed
+- Verification timestamp: 2026-07-15T15:09:50Z
+
+The detailed hashes, byte counts and downloaded-PDF checks are recorded in `live-verification.json`.
