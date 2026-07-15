@@ -30,12 +30,15 @@
     "campaign-audit.md",
     "qa-results.json",
     "render-qa.json",
-    "document-render-qa.json"
+    "document-render-qa.json",
+    "live-verification.json"
   ],
   "publication": [
     ".github/workflows/pages.yml"
   ],
   "audit_scripts": [
-    "scripts/qa.py"
+    "scripts/qa.py",
+    ".ci/generate-pdfs.sh",
+    ".ci/verify-live.sh"
   ]
 }
