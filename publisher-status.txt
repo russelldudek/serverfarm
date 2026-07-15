@@ -1,3 +1,65 @@
-state=started
+state=succeeded
 source_sha=14a69f52df87fd80fa6137e17f25be0b9552b95e
-updated_at=2026-07-15T15:01:14Z
+updated_at=2026-07-15T15:01:16Z
+
+--- detail ---
++ set -euo pipefail
++ cat .payload/v2.part00.b64 .payload/v2.part01.b64 .payload/v2.part02.b64 .payload/v2.part03.b64 .payload/v2.part04.b64
++ base64 --decode
++ echo '10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83  /tmp/serverfarm-v2.tar.gz'
++ sha256sum --check --status
++ rm -rf /tmp/campaign
++ mkdir -p /tmp/campaign
++ tar -xzf /tmp/serverfarm-v2.tar.gz -C /tmp/campaign
++ mkdir -p /tmp/campaign/assets/brand
++ base64 --decode official-serverfarm-logo.b64
+++ stat -c%s /tmp/campaign/assets/brand/serverfarm-logo.jpg
++ test 4156 -eq 4156
++ cat
++ touch /tmp/campaign/.nojekyll
++ rm -rf /tmp/campaign/.github
++ find . -mindepth 1 -maxdepth 1 '!' -name .git '!' -name .github -exec rm -rf '{}' +
++ cp -a /tmp/campaign/. ./
++ git config user.name 'github-actions[bot]'
++ git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
++ git add -A
++ git commit -m 'Publish audited Serverfarm candidate campaign'
+[main 9217bae] Publish audited Serverfarm candidate campaign
+ 34 files changed, 588 insertions(+), 86 deletions(-)
+ delete mode 100644 .materialize-final-trigger
+ create mode 100644 .nojekyll
+ delete mode 100644 .payload/materialize.sh
+ delete mode 100644 .payload/publish-with-status.sh
+ delete mode 100644 .payload/v2.part00.b64
+ delete mode 100644 .payload/v2.part01.b64
+ delete mode 100644 .payload/v2.part02.b64
+ delete mode 100644 .payload/v2.part03.b64
+ delete mode 100644 .payload/v2.part04.b64
+ delete mode 100644 .publisher-status-trigger
+ delete mode 100644 .publisher-trigger
+ delete mode 100644 .smoke2-trigger
+ create mode 100644 120-day-plan.html
+ create mode 100644 README.md
+ create mode 100644 app.js
+ create mode 100644 artifact-manifest.json
+ create mode 100644 assets/brand/README.md
+ create mode 100644 assets/brand/serverfarm-logo.jpg
+ create mode 100644 brand-intelligence.md
+ create mode 100644 brand-tokens.css
+ create mode 100644 campaign-audit.md
+ create mode 100644 campus-paralleling-review.html
+ create mode 100644 cover-letter.html
+ create mode 100644 document-render-qa.json
+ create mode 100644 index.html
+ create mode 100644 interview-brief.html
+ delete mode 100644 isolated-automation-active.txt
+ delete mode 100644 official-serverfarm-logo.b64
+ create mode 100644 qa-results.json
+ create mode 100644 render-qa.json
+ create mode 100644 resume.html
+ create mode 100755 scripts/qa.py
+ create mode 100644 source-notes.md
+ create mode 100644 styles.css
++ git push origin main
+To https://github.com/russelldudek/serverfarm
+   14a69f5..9217bae  main -> main
