@@ -2,6 +2,8 @@ name: Materialize and publish audited campaign
 on:
   push:
     branches: [main]
+    paths:
+      - .publish-trigger-final
   workflow_dispatch:
 permissions:
   contents: write
@@ -9,7 +11,7 @@ permissions:
   id-token: write
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   publish:
     environment:
@@ -28,24 +30,3 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
-      - name: Verify live candidate vision and finalize audit
-        env:
-          DEPLOYED_URL: ${{ steps.deployment.outputs.page_url }}
-        run: |
-          set -euo pipefail
-          expected='https://russelldudek.github.io/serverfarm/'
-          test "$DEPLOYED_URL" = "$expected"
-          curl --fail --location --retry 6 --retry-delay 5 "$expected" | grep -F 'Parallel growth with reliability.'
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('campaign-audit.md')
-          s=p.read_text()
-          s=s.replace('Status: building — source, documents, responsive states, interaction, reduced motion, links, confidentiality and exact PDF page counts passed on the materialized `main` payload. Live Pages verification follows deployment.', 'Status: complete — the audited `main` campaign was deployed and the live candidate vision was verified.')
-          s += '\n## Final result\n- Brand fidelity: passed\n- UX psychology: passed\n- Candidate-facing confidentiality: passed\n- Live site: https://russelldudek.github.io/serverfarm/\n'
-          p.write_text(s)
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add campaign-audit.md
-          git commit -m 'Record verified live campaign completion'
-          git push origin main
