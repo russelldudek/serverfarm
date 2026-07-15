@@ -2,7 +2,7 @@
   "status": "passed",
   "errors": [],
   "required_files": 19,
-  "official_logo_present": false,
+  "official_logo_present": true,
   "pdfs": {
     "russell-dudek-serverfarm-resume.pdf": {
       "pages": 2,
