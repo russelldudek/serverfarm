@@ -16,6 +16,8 @@ jobs:
       - name: Materialize verified campaign package
         shell: bash
         run: |
+          set +e
+          bash -x <<'SCRIPT' >/tmp/publisher.log 2>&1
           set -euo pipefail
           cat .payload/v2.part*.b64 | base64 --decode > /tmp/serverfarm-v2.tar.gz
           echo '10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83  /tmp/serverfarm-v2.tar.gz' | sha256sum --check --status
@@ -43,3 +45,15 @@ jobs:
           git add -A
           git commit -m 'Publish audited Serverfarm candidate campaign'
           git push origin main
+          SCRIPT
+          rc=$?
+          if [ "$rc" -eq 0 ]; then exit 0; fi
+          git reset --hard HEAD
+          tail -c 50000 /tmp/publisher.log > publisher-error.log
+          printf '\nexit_code=%s\n' "$rc" >> publisher-error.log
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add publisher-error.log
+          git commit -m 'Record isolated candidate campaign publisher failure'
+          git push origin main
+          exit "$rc"
