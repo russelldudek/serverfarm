@@ -19,7 +19,10 @@ cat > /tmp/campaign/assets/brand/README.md <<'EOF'
 - Context: independent candidate vision by Russell Dudek; not affiliated with or endorsed by Serverfarm
 EOF
 touch /tmp/campaign/.nojekyll
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+
+# Workflow files are installed separately through the connected GitHub app.
+rm -rf /tmp/campaign/.github
+find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .github -exec rm -rf {} +
 cp -a /tmp/campaign/. ./
 git config user.name 'github-actions[bot]'
 git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
