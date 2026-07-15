@@ -16,6 +16,8 @@ jobs:
       - name: Replace temporary shell with audited campaign
         shell: bash
         run: |
+          set +e
+          bash -x <<'SCRIPT' >/tmp/materialize.log 2>&1
           set -euo pipefail
           cat .payload/v2.part*.b64 | base64 --decode > /tmp/serverfarm-v2.tar.gz
           echo '10697929f64f80eb81e2e8cca66c59d3c5a81a3f70437dfd29d6e2a1690f3b83  /tmp/serverfarm-v2.tar.gz' | sha256sum --check --status
@@ -34,20 +36,24 @@ jobs:
           - Treatment: unmodified local copy used only for nominative employer identification
           - Context: independent candidate vision by Russell Dudek; not affiliated with or endorsed by Serverfarm
           EOF
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('/tmp/campaign/brand-intelligence.md')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('The publication workflow retrieves Serverfarm\'s publicly served identity asset from the company\'s official website and commits it locally at `assets/brand/serverfarm-logo.jpg` for nominative employer identification.', 'The unmodified official Serverfarm identity asset is locally committed at `assets/brand/serverfarm-logo.jpg` for nominative employer identification.')
-          s=s.replace('The official asset is sourced from Serverfarm\'s public website and will be committed locally before final audit.', 'The official asset is sourced from Serverfarm\'s public website and is committed locally with provenance.')
-          p.write_text(s,encoding='utf-8')
-          PY
           touch /tmp/campaign/.nojekyll
           cd "$GITHUB_WORKSPACE"
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-          rsync -a /tmp/campaign/ ./
+          cp -a /tmp/campaign/. ./
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git commit -m 'Publish audited Serverfarm candidate campaign'
           git push origin main
+          SCRIPT
+          rc=$?
+          if [ "$rc" -eq 0 ]; then exit 0; fi
+          git reset --hard HEAD
+          tail -c 50000 /tmp/materialize.log > materialize-error.log
+          printf '\nexit_code=%s\n' "$rc" >> materialize-error.log
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add materialize-error.log
+          git commit -m 'Record candidate campaign materialization failure'
+          git push origin main
+          exit "$rc"
