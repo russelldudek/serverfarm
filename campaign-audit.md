@@ -82,3 +82,7 @@ The official Serverfarm identity asset is committed at `assets/brand/serverfarm-
 - Verification timestamp: 2026-07-15T15:09:50Z
 
 The detailed hashes, byte counts and downloaded-PDF checks are recorded in `live-verification.json`.
+
+## Final maintenance note
+
+A redundant review-event finalizer introduced after completion was removed. The audited campaign artifacts and live deployment remain unchanged.
