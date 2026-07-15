@@ -94,7 +94,8 @@ with sync_playwright() as p:
     page.locator('[data-scenario="alarm"]').click()
     alarm=page.locator('#stateStatus').inner_text()
     selected=page.locator('[data-scenario="alarm"]').get_attribute('aria-selected')
-    if alarm == baseline or not any(word in alarm for word in ('HOLD','Hold','ESCALATE','Escalate')):
+    alarm_upper=alarm.upper()
+    if alarm == baseline or not any(word in alarm_upper for word in ('HOLD','ESCALATE')):
         errors.append(f'interaction did not produce a hold/escalate state: baseline={baseline!r}, alarm={alarm!r}')
     if selected != 'true': errors.append('scenario ARIA state did not update')
     page.keyboard.press('Tab')
@@ -143,7 +144,7 @@ https://russelldudek.github.io/serverfarm/
 PY
 
 # Retire the bootstrap payload and leave the stable Pages workflow from the campaign source.
-rm -rf .payload .campaign-source.part*.b64 .build-trigger .github/workflows/publish.yml
+rm -rf .payload .campaign-source.part*.b64 .build-trigger .publish-v2-trigger .publish-trigger-final .run-publication .deep-diagnose-trigger .automation-active bootstrap-diagnostic.txt deep-diagnostic.txt bootstrap-full.log .github/workflows/publish.yml .github/workflows/smoke.yml .github/workflows/run-publication.yml .github/workflows/deep-diagnose.yml
 
 git config user.name 'github-actions[bot]'
 git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
