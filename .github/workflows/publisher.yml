@@ -1,0 +1,16 @@
+name: Publish Serverfarm candidate campaign
+on:
+  push:
+    branches: [main]
+    paths:
+      - .publisher-trigger
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash .payload/materialize.sh
