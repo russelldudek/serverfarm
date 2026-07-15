@@ -1,0 +1,9 @@
+
+const scenarios={
+  maintenance:{title:'Controlled maintenance window',status:'Proceed with controls',tone:'ready',desc:'The live path remains protected when authority, current plant condition, approved procedure, partner readiness and customer communication are all explicit.',states:['closed','closed','closed','closed','closed']},
+  alarm:{title:'Repeat alarm with incomplete root cause',status:'Hold and escalate',tone:'hold',desc:'A repeated signal without validated plant condition or closure evidence should not be normalized into routine work.',states:['closed','warn','warn','closed','warn']},
+  vendor:{title:'Vendor miss inside a customer commitment',status:'Replan with owner',tone:'hold',desc:'The work stays bounded until partner accountability, revised evidence and customer impact are owned rather than merely reported.',states:['closed','closed','closed','warn','warn']},
+  commissioning:{title:'New hall operational handover',status:'Parallel after readiness',tone:'ready',desc:'Capacity earns operational value only when training, procedure, system state, customer continuity and learning ownership close together.',states:['closed','closed','closed','closed','closed']}
+};
+function setScenario(key){const d=scenarios[key];const board=document.querySelector('.board');if(!board)return;board.className='board '+d.tone;document.querySelectorAll('.scenario-tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.scenario===key)));document.querySelectorAll('.interlock').forEach((el,i)=>{el.classList.remove('closed','warn');el.classList.add(d.states[i])});document.getElementById('stateTitle').textContent=d.title;document.getElementById('stateDesc').textContent=d.desc;document.getElementById('stateStatus').textContent=d.status;}
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('[data-scenario]').forEach(b=>b.addEventListener('click',()=>setScenario(b.dataset.scenario)));setScenario('maintenance')});

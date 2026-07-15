@@ -1,0 +1,13 @@
+
+:root {
+  --brand-red: #a01c20; /* source-sampled from official Serverfarm web identity */
+  --brand-red-dark: #741215;
+  --brand-charcoal: #222426;
+  --brand-graphite: #50555a;
+  --brand-silver: #d6d7d8;
+  --brand-paper: #f5f3ef;
+  --brand-white: #ffffff;
+  --campaign-energy: #f2b544; /* candidate-original: energized-path state */
+  --campaign-safe: #4f8f72; /* candidate-original: controlled-ready state */
+  --campaign-hold: #b45f3c; /* candidate-original: hold/escalation state */
+}

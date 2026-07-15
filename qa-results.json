@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "errors": [],
+  "required_files": 19,
+  "official_logo_present": false,
+  "pdfs": {
+    "russell-dudek-serverfarm-resume.pdf": {
+      "pages": 2,
+      "expected": 2,
+      "campaign_url": true
+    },
+    "russell-dudek-serverfarm-cover-letter.pdf": {
+      "pages": 1,
+      "expected": 1,
+      "campaign_url": true
+    },
+    "serverfarm-interview-thesis-brief.pdf": {
+      "pages": 3,
+      "expected": 3,
+      "campaign_url": true
+    },
+    "serverfarm-120-day-entry-plan.pdf": {
+      "pages": 4,
+      "expected": 4,
+      "campaign_url": true
+    },
+    "serverfarm-campus-paralleling-review.pdf": {
+      "pages": 2,
+      "expected": 2,
+      "campaign_url": true
+    }
+  }
+}

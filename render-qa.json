@@ -1,0 +1,51 @@
+[
+  {
+    "viewport": "desktop",
+    "dims": {
+      "sw": 1440,
+      "cw": 1440,
+      "board": true,
+      "status": "Proceed with controls"
+    },
+    "status_after_alarm": "Hold and escalate",
+    "errors": []
+  },
+  {
+    "viewport": "laptop",
+    "dims": {
+      "sw": 1280,
+      "cw": 1280,
+      "board": true,
+      "status": "Proceed with controls"
+    },
+    "status_after_alarm": "Hold and escalate",
+    "errors": []
+  },
+  {
+    "viewport": "tablet",
+    "dims": {
+      "sw": 768,
+      "cw": 768,
+      "board": true,
+      "status": "Proceed with controls"
+    },
+    "status_after_alarm": "Hold and escalate",
+    "errors": []
+  },
+  {
+    "viewport": "mobile",
+    "dims": {
+      "sw": 390,
+      "cw": 390,
+      "board": true,
+      "status": "Proceed with controls"
+    },
+    "status_after_alarm": "Hold and escalate",
+    "errors": []
+  },
+  {
+    "viewport": "reduced-motion",
+    "animation": "none",
+    "errors": []
+  }
+]
