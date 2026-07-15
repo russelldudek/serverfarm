@@ -1,0 +1,19 @@
+name: Verify live Serverfarm campaign
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .verify-live-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash .ci/verify-live.sh
