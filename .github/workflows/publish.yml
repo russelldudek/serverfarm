@@ -1,65 +1,10 @@
-name: Build and publish candidate vision
+name: Stage candidate campaign payload
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - 'docs/**'
-      - 'assets/brand/serverfarm-logo.jpg'
-      - 'qa-results.json'
-      - 'campaign-audit.md'
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
-  build:
+  staged:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Materialize campaign source
-        run: |
-          cat .campaign-source.part*.b64 | base64 -d > /tmp/campaign-source.tar.gz
-          tar -xzf /tmp/campaign-source.tar.gz -C .
-          rm .campaign-source.part*.b64
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install browser and audit dependencies
-        run: |
-          python -m pip install --disable-pip-version-check playwright pypdf beautifulsoup4
-          python -m playwright install --with-deps chromium
-      - name: Acquire official Serverfarm identity asset
-        run: |
-          mkdir -p assets/brand
-          curl --fail --location --retry 3 'https://www.serverfarmllc.com/wp-content/uploads/elementor/thumbs/Serverfarm-Logo-qqtqcc9wnm4wrmbc39le0rosoixmpaf6v0v3ul7f8u.jpg' -o assets/brand/serverfarm-logo.jpg
-      - name: Generate PDFs and run campaign QA
-        run: python scripts/generate_and_verify.py
-      - name: Commit complete audited package
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git diff --cached --quiet || git commit -m 'Publish complete Serverfarm candidate campaign'
-          git push
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - run: echo "Payload staging only. Publication is triggered after all parts are present."
